@@ -25,6 +25,15 @@ jobs:
         run: npm ci
       - name: Build website
         run: npm run build
+        # after we hit that npm run build its gonna create dist folder with all the code which is gonna be available for deployment but if we want to save that files and to have access to these produced files we have to save them
+        # in this build job we will get them manually and in next job (deployment) we will get them automatically
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: |
+            dist
+            package.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
